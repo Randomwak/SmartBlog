@@ -65,6 +65,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'blog.views.global_setting',#配置上下文处理器，这个处理器进行执行的时候，每个页面都会调用到
             ],
         },
     },
@@ -125,3 +126,12 @@ USE_TZ = False #设置成本地时间
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS=(os.path.join(BASE_DIR,'static'),)  #静态文件目录配置
+
+
+#网站的基本信息配置
+SITE_NAME="L的个人博客"
+SITE_DESC="专注python开发，欢迎和大家交流"
+WEIBO_SINA=""
+WEIBO_TECENT=""
+PRO_RSS=""
+PRO_EMAIL="1248515039@qq.com"
