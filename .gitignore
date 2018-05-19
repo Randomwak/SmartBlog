@@ -1,1 +1,4 @@
 .idea
+blog/*.pyc
+SmartBlog/*pyc
+blog/**/*.pyc
