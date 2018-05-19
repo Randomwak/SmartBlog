@@ -128,6 +128,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS=(os.path.join(BASE_DIR,'static'),)  #静态文件目录配置
 
 
+#自定义用户model
+AUTH_USER_MODEL="blog.UserProfile"
+
 #网站的基本信息配置
 SITE_NAME="L的个人博客"
 SITE_DESC="专注python开发，欢迎和大家交流"
