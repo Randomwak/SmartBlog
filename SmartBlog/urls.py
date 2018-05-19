@@ -1,3 +1,4 @@
+#-*- coding:utf-8 -*-
 """SmartBlog URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -17,6 +18,10 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+from blog.views import IndexPageView
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    #配置博客主页
+    url(r'^index/$',IndexPageView.as_view(),name="index")
 ]
