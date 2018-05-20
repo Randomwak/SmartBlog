@@ -2,6 +2,7 @@
 from django.shortcuts import render
 from django.views.generic.base import View
 from django.conf import settings
+from models import Category
 # Create your views here.
 
 
@@ -21,4 +22,8 @@ class IndexPageView(View):
     博客index页面
     '''
     def get(self,request):
-        return render(request,"index.html",locals())
+        #分类数据
+        category_list=Category.objects.all()
+
+        return render(request,"index.html",{'category_list':category_list})
+
