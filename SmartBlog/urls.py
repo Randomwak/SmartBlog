@@ -24,11 +24,8 @@ import xadmin
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
-    #配置博客主页
-    url(r'^index/$',IndexPageView.as_view(),name="index"),
-    #文章归档页面
-    url(r'^archive/$', ArchiveView.as_view(), name="archive"),
     url(r'', include('ckeditor_uploader.urls')),       #富文本编辑器
+    url(r'^', include('blog.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) #没有这一句无法显示上传的图片
 
 

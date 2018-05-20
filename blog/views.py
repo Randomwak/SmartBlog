@@ -12,48 +12,41 @@ def global_setting(request):
     '''
     博客全局设置
     '''
+
+    # 分类数据
+    category_list = Category.objects.all()
+    # 广告数据
+    ad_list = Ad.objects.all()
+    # 友情链接
+    link_list = Links.objects.all()
+
     return {'SITE_NAME':settings.SITE_NAME,
             'SITE_DESC':settings.SITE_DESC,
             'WEIBO_SINA':settings.WEIBO_SINA,
             'WEIBO_TECENT':settings.WEIBO_TECENT,
             'PRO_RSS':settings.PRO_RSS,
-            'PRO_EMAIL':settings.PRO_EMAIL,}
+            'PRO_EMAIL':settings.PRO_EMAIL,
+            'category_list':category_list,
+            'ad_list':ad_list,
+            'link_list':link_list,
+
+            }
 
 class IndexPageView(View):
     '''
     博客index页面
     '''
     def get(self,request):
-        #分类数据
-        category_list=Category.objects.all()
-        #广告数据
-        ad_list=Ad.objects.all()
-        #友情链接
-        link_list=Links.objects.all()
-
         #最新文章数据
         artical_list=Article.objects.all()
-
-        #获取页面
-        try:
-            page = request.GET.get('page', 1)
-        except (PageNotAnInteger,EmptyPage):
-            page = 1
-
-        #分页
-        p = Paginator(artical_list,3, request=request)
-
-        artical_list=p.page(page)
+        artical_list = getPage(request, artical_list)
 
         #获取文章归档数据
         archive_list=Article.objects.distinct_date()
 
         return render(request,"index.html",{
-            'category_list':category_list,
-            'ad_list':ad_list,
             'artical_list':artical_list,
             'archive_list':archive_list,
-            'link_list':link_list,
         })
 
 class ArchiveView(View):
@@ -61,34 +54,27 @@ class ArchiveView(View):
     文章归档
     '''
     def get(self,request):
-        #分类数据
-        category_list=Category.objects.all()
-        #广告数据
-        ad_list=Ad.objects.all()
-        #友情链接
-        link_list=Links.objects.all()
-
         year = request.GET.get('year', None)
         month = request.GET.get('month', None)
         article_list=Article.objects.filter(date_publish__icontains=year+'-'+month)
-
-
-        #获取页面
-        try:
-            page = request.GET.get('page', 1)
-        except (PageNotAnInteger,EmptyPage):
-            page = 1
-
-        #分页
-        p = Paginator(article_list,3, request=request)
-
-        artical_list=p.page(page)
+        article_list=getPage(request,article_list)
 
         archive_list=Article.objects.distinct_date()
         return render(request,"archive.html",{
-            'ad_list':ad_list,
-            'category_list': category_list,
-            'artical_list':artical_list,
+            'artical_list':article_list,
             'archive_list':archive_list,
-            'link_list':link_list,
         })
+
+
+# 分页代码
+def getPage(request, article_list):
+    # 获取页面
+    try:
+        page = request.GET.get('page', 1)
+    except (PageNotAnInteger, EmptyPage):
+        page = 1
+    # 分页
+    p = Paginator(article_list, 3, request=request)
+    article_list = p.page(page)
+    return article_list
+
