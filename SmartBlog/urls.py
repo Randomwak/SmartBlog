@@ -20,8 +20,10 @@ from django.contrib import admin
 
 from blog.views import IndexPageView
 
+import xadmin
+
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^xadmin/', xadmin.site.urls),
     #配置博客主页
     url(r'^index/$',IndexPageView.as_view(),name="index")
 ]

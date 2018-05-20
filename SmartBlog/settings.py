@@ -12,9 +12,12 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#添加extra_app,便于注册xadmin
+sys.path.insert(0,os.path.join(BASE_DIR,'extra_app'))
 
 
 # Quick-start development settings - unsuitable for production
@@ -39,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog',    #注册blog app
+    'xadmin',  #注册xadmin
+    'crispy_forms', #xadmin必须
 ]
 
 MIDDLEWARE_CLASSES = [
