@@ -73,6 +73,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'blog.views.global_setting',#配置上下文处理器，这个处理器进行执行的时候，每个页面都会调用到
+                'django.core.context_processors.media',    #需要配置 以便网页中获取media地址 -》MEDIA_URL
             ],
         },
     },
@@ -149,7 +150,7 @@ PRO_EMAIL="1248515039@qq.com"
 
 
 #配置媒体文件及ckeditor上传目录
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CKEDITOR_UPLOAD_PATH = 'upload/'
 CKEDITOR_IMAGE_BACKEND = 'pillow'

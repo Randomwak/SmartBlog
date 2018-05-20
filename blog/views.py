@@ -2,7 +2,8 @@
 from django.shortcuts import render
 from django.views.generic.base import View
 from django.conf import settings
-from models import Category
+
+from models import Category,Ad
 # Create your views here.
 
 
@@ -24,6 +25,11 @@ class IndexPageView(View):
     def get(self,request):
         #分类数据
         category_list=Category.objects.all()
+        #广告数据
+        ad_list=Ad.objects.all()
 
-        return render(request,"index.html",{'category_list':category_list})
+        return render(request,"index.html",{
+            'category_list':category_list,
+            'ad_list':ad_list,
+        })
 
