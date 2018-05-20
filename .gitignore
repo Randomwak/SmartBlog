@@ -2,4 +2,4 @@
 blog/*.pyc
 SmartBlog/*pyc
 blog/**/*.pyc
-blog/**/*.py
+blog/migrations/*.py
