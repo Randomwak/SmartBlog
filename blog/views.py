@@ -2,9 +2,9 @@
 from django.shortcuts import render
 from django.views.generic.base import View
 from django.conf import settings
-
+from django.db.models import Count
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
-from models import Category,Ad,Article,Links
+from models import Category,Ad,Article,Links,Comment
 # Create your views here.
 
 
@@ -20,6 +20,11 @@ def global_setting(request):
     # 友情链接
     link_list = Links.objects.all()
 
+    #先取出comment中的article，然后使用聚合函数对article进行统计，取生成变量名为comment_count，最后对comment_count进行排序
+    comment_count_list = Comment.objects.values('article').annotate(comment_count=Count('article')).order_by('-comment_count')
+    #把comment对象取出来到article对象中进行查找，可使用pirnt comment_count_list来查看
+    article_comment_list = [Article.objects.get(pk=comment['article']) for comment in comment_count_list]
+
     return {'SITE_NAME':settings.SITE_NAME,
             'SITE_DESC':settings.SITE_DESC,
             'WEIBO_SINA':settings.WEIBO_SINA,
@@ -29,7 +34,7 @@ def global_setting(request):
             'category_list':category_list,
             'ad_list':ad_list,
             'link_list':link_list,
-
+            'article_comment_list':article_comment_list,
             }
 
 class IndexPageView(View):
