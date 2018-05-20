@@ -4,7 +4,7 @@ from django.views.generic.base import View
 from django.conf import settings
 
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
-from models import Category,Ad,Article
+from models import Category,Ad,Article,Links
 # Create your views here.
 
 
@@ -28,7 +28,8 @@ class IndexPageView(View):
         category_list=Category.objects.all()
         #广告数据
         ad_list=Ad.objects.all()
-
+        #友情链接
+        link_list=Links.objects.all()
 
         #最新文章数据
         artical_list=Article.objects.all()
@@ -52,6 +53,7 @@ class IndexPageView(View):
             'ad_list':ad_list,
             'artical_list':artical_list,
             'archive_list':archive_list,
+            'link_list':link_list,
         })
 
 class ArchiveView(View):
@@ -63,6 +65,8 @@ class ArchiveView(View):
         category_list=Category.objects.all()
         #广告数据
         ad_list=Ad.objects.all()
+        #友情链接
+        link_list=Links.objects.all()
 
         year = request.GET.get('year', None)
         month = request.GET.get('month', None)
@@ -86,4 +90,5 @@ class ArchiveView(View):
             'category_list': category_list,
             'artical_list':artical_list,
             'archive_list':archive_list,
+            'link_list':link_list,
         })
