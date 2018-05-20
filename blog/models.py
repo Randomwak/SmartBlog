@@ -55,6 +55,16 @@ class UserProfile(AbstractUser):
         return self.username
 
 
+class ArticleManger(models.Manager):
+    def distinct_date(self):
+        distinct_date_list=[]
+        date_list=self.values('date_publish')
+        for date in date_list:
+            date=date['date_publish'].strftime("%Y/%m文章存档")
+            if date not in distinct_date_list:
+                distinct_date_list.append(date)
+        return distinct_date_list
+
 class Article(models.Model):
     '''
     文章模型
@@ -69,6 +79,7 @@ class Article(models.Model):
     category = models.ForeignKey(Category, blank=True, null=True, verbose_name='分类')
     tag = models.ManyToManyField(Tag, verbose_name='标签')
 
+    objects=ArticleManger()
 
     class Meta:
         verbose_name = '文章'

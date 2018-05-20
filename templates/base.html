@@ -134,21 +134,11 @@ window.onload = function ()
     <div class="tuwen">
       <h3>文章归档</h3>
       <ul>
+          {% for archive in archive_list %}
         <li>
-          <p><span class="tutime font-size-18"><a href=''>2015年2月文章归档</a></span></p>
+          <p><span class="tutime font-size-18"><a href='{% url 'archive' %}?year={{ archive | slice:":4" }}&month={{ archive | slice:"5:7" }}'>{{ archive }}</a></span></p>
         </li>
-        <li>
-          <p><span class="tutime font-size-18"><a href=''>2015年3月文章归档</a></span></p>
-        </li>
-        <li>
-          <p><span class="tutime font-size-18"><a href=''>2015年4月文章归档</a></span></p>
-        </li>
-        <li>
-          <p><span class="tutime font-size-18"><a href=''>2015年5月文章归档</a></span></p>
-        </li>
-        <li>
-          <p><span class="tutime font-size-18"><a href=''>2015年6月文章归档</a></span></p>
-        </li>
+          {% endfor %}
       </ul>
     </div>
     <div class="links">

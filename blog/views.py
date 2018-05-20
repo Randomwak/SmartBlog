@@ -44,9 +44,46 @@ class IndexPageView(View):
 
         artical_list=p.page(page)
 
+        #获取文章归档数据
+        archive_list=Article.objects.distinct_date()
+
         return render(request,"index.html",{
             'category_list':category_list,
             'ad_list':ad_list,
             'artical_list':artical_list,
+            'archive_list':archive_list,
         })
 
+class ArchiveView(View):
+    '''
+    文章归档
+    '''
+    def get(self,request):
+        #分类数据
+        category_list=Category.objects.all()
+        #广告数据
+        ad_list=Ad.objects.all()
+
+        year = request.GET.get('year', None)
+        month = request.GET.get('month', None)
+        article_list=Article.objects.filter(date_publish__icontains=year+'-'+month)
+
+
+        #获取页面
+        try:
+            page = request.GET.get('page', 1)
+        except (PageNotAnInteger,EmptyPage):
+            page = 1
+
+        #分页
+        p = Paginator(article_list,3, request=request)
+
+        artical_list=p.page(page)
+
+        archive_list=Article.objects.distinct_date()
+        return render(request,"archive.html",{
+            'ad_list':ad_list,
+            'category_list': category_list,
+            'artical_list':artical_list,
+            'archive_list':archive_list,
+        })

@@ -18,7 +18,7 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.conf.urls.static import static
 from django.conf import settings
-from blog.views import IndexPageView
+from blog.views import IndexPageView,ArchiveView
 
 import xadmin
 
@@ -26,6 +26,8 @@ urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
     #配置博客主页
     url(r'^index/$',IndexPageView.as_view(),name="index"),
+    #文章归档页面
+    url(r'^archive/$', ArchiveView.as_view(), name="archive"),
     url(r'', include('ckeditor_uploader.urls')),       #富文本编辑器
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) #没有这一句无法显示上传的图片
 

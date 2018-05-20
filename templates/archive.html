@@ -1,0 +1,48 @@
+{% extends 'base.html'%}
+{% load staticfiles %}
+
+{% block left_content %}
+    {% include 'ad.html' %}
+    <div class="topnews">
+      <h2>{{ request.GET.year }}/{{ request.GET.month }}归档文章</h2>
+        {% for article in artical_list.object_list %}
+            <div class="blogs">
+        <ul>
+          <h3><a href="/">{{ article.title }}</a></h3>
+            <p>{{ article.desc }}</p>
+          <p class="autor"><span class="lm f_l">{% for tag in article.tag.all %}<a href="/">{{ tag.name }}</a>&nbsp;{% endfor %}</span><span class="dtime f_l">{{ article.date_publish| date:'Y-m-d' }}</span><span class="viewnum f_r">浏览（<a href="/">{{ article.click_count }}</a>）</span><span class="pingl f_r">评论（<a href="/">{{ article.comment_set.all.count }}</a>）</span></p>
+        </ul>
+      </div>
+        {% endfor %}
+
+
+    </div>
+  <div id="pagination">
+    <ul id="pagination-flickr">
+        {% if artical_list.has_previous %}
+                    <li class="previous-off"><a href="?{{ artical_list.previous_page_number.querystring }}" class="">上一页</a></li>
+                {% endif %}
+
+                {% for page in artical_list.pages %}
+                    {% if page %}
+                        {% ifequal page artical_list.number %}
+                                <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                        {% else %}
+                                <li><a href="?{{ page.querystring }}" class="">{{ page }}</a></li>
+                        {% endifequal %}
+                    {% else %}
+                       <li class=""><a href="">...</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if artical_list.has_next %}
+                    <li class="next"><a href="?{{ artical_list.next_page_number.querystring }}">下一页</a></li>
+                {% endif %}
+   </ul>
+   </div>
+
+
+
+
+
+{% endblock %}
