@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser   #继承用户抽象模型
-
+from ckeditor_uploader.fields import RichTextUploadingField
 
 # Create your models here.
 class Tag(models.Model):
@@ -61,7 +61,7 @@ class Article(models.Model):
     '''
     title = models.CharField(max_length=50, verbose_name='文章标题')
     desc = models.CharField(max_length=50, verbose_name='文章描述')
-    content = models.TextField(verbose_name='文章内容')
+    content = RichTextUploadingField(verbose_name='文章内容')   #替换为富文本编辑器
     click_count = models.IntegerField(default=0, verbose_name='点击次数')
     is_recommend = models.BooleanField(default=False, verbose_name='是否推荐')
     date_publish = models.DateTimeField(auto_now_add=True, verbose_name='发布时间')
@@ -83,7 +83,7 @@ class Comment(models.Model):
     '''
     评论模型
     '''
-    content = models.TextField(verbose_name='评论内容')
+    content = RichTextUploadingField(verbose_name='评论内容')   #替换为富文本编辑器
     username = models.CharField(max_length=30, blank=True, null=True, verbose_name='用户名')
     email = models.EmailField(max_length=50, blank=True, null=True, verbose_name='邮箱地址')
     url = models.URLField(max_length=100, blank=True, null=True, verbose_name='个人网页地址')

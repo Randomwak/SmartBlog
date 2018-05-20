@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'blog',    #注册blog app
     'xadmin',  #注册xadmin
     'crispy_forms', #xadmin必须
+    'ckeditor',
+    'ckeditor_uploader',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -143,3 +145,11 @@ WEIBO_SINA=""
 WEIBO_TECENT=""
 PRO_RSS=""
 PRO_EMAIL="1248515039@qq.com"
+
+
+
+#配置媒体文件及ckeditor上传目录
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+CKEDITOR_UPLOAD_PATH = 'upload/'
+CKEDITOR_IMAGE_BACKEND = 'pillow'
