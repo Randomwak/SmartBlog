@@ -16,7 +16,7 @@ a:hover { text-decoration: none; }
 .r_box { width: 300px; }
 /* 头部信息 */
 header { width: 1000px; margin: 20px auto; overflow: hidden; clear: both; }
-#topnav { width: 100%; background: #48AE15; height: 46px; line-height: 46px; text-align: left; border-radius: 46px; }
+#topnav { width: 100%; background: #8DB6CD; height: 46px; line-height: 46px; text-align: left; border-radius: 46px; }
 #topnav ul{ margin-left:50px; }
 #topnav a { display: inline-block; font-size: 18px; font-family: "Microsoft Yahei", Arial, Helvetica, sans-serif; padding: 0 20px; }
 #topnav a:hover { background: #fff; color: #000; }
