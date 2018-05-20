@@ -3,3 +3,4 @@ blog/*.pyc
 SmartBlog/*pyc
 blog/**/*.pyc
 blog/migrations/*.py
+media/**/*.*
