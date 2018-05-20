@@ -3,7 +3,8 @@ from django.shortcuts import render
 from django.views.generic.base import View
 from django.conf import settings
 
-from models import Category,Ad
+from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
+from models import Category,Ad,Article
 # Create your views here.
 
 
@@ -28,8 +29,24 @@ class IndexPageView(View):
         #广告数据
         ad_list=Ad.objects.all()
 
+
+        #最新文章数据
+        artical_list=Article.objects.all()
+
+        #获取页面
+        try:
+            page = request.GET.get('page', 1)
+        except (PageNotAnInteger,EmptyPage):
+            page = 1
+
+        #分页
+        p = Paginator(artical_list,3, request=request)
+
+        artical_list=p.page(page)
+
         return render(request,"index.html",{
             'category_list':category_list,
             'ad_list':ad_list,
+            'artical_list':artical_list,
         })
 
