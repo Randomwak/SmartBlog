@@ -25,6 +25,9 @@ def global_setting(request):
     #把comment对象取出来到article对象中进行查找，可使用pirnt comment_count_list来查看
     article_comment_list = [Article.objects.get(pk=comment['article']) for comment in comment_count_list]
 
+    #站长推荐
+    recommend_articles=Article.objects.filter(is_recommend=True)
+
     return {'SITE_NAME':settings.SITE_NAME,
             'SITE_DESC':settings.SITE_DESC,
             'WEIBO_SINA':settings.WEIBO_SINA,
@@ -35,6 +38,7 @@ def global_setting(request):
             'ad_list':ad_list,
             'link_list':link_list,
             'article_comment_list':article_comment_list,
+            'recommend_articles':recommend_articles,
             }
 
 class IndexPageView(View):
