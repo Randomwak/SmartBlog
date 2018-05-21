@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^archive/$', ArchiveView.as_view(), name="archive"),
     #文章分类页面
     url(r'^category/$', CategoryView.as_view(), name='category'),
-
+    #文章详情页面
+    url(r'^article/$', ArticleView.as_view(), name='article'),
 ]

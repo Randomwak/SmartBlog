@@ -21,9 +21,12 @@ def global_setting(request):
     link_list = Links.objects.all()
 
     #先取出comment中的article，然后使用聚合函数对article进行统计，取生成变量名为comment_count，最后对comment_count进行排序
-    comment_count_list = Comment.objects.values('article').annotate(comment_count=Count('article')).order_by('-comment_count')
-    #把comment对象取出来到article对象中进行查找，可使用pirnt comment_count_list来查看
-    article_comment_list = [Article.objects.get(pk=comment['article']) for comment in comment_count_list][:6]
+    try:
+        comment_count_list = Comment.objects.values('article').annotate(comment_count=Count('article')).order_by('-comment_count')
+        #把comment对象取出来到article对象中进行查找，可使用pirnt comment_count_list来查看
+        article_comment_list = [Article.objects.get(pk=comment['article']) for comment in comment_count_list][:6]
+    except:
+        article_comment_list=[]
 
     #站长推荐
     recommend_articles=Article.objects.filter(is_recommend=True)[:6]
@@ -107,4 +110,38 @@ class CategoryView(View):
         return render(request,"category.html",{
             'article_list':article_list,
             'cid':int(cid)-1,
+        })
+
+
+class ArticleView(View):
+    '''
+    文章详情页面
+    '''
+    def get(self,request):
+        # 获取文章id
+        id = request.GET.get('id', None)
+        try:
+            # 获取文章信息
+            article = Article.objects.get(pk=id)
+        except Article.DoesNotExist:
+            return render(request, 'failure.html', {'reason': '没有找到对应的文章'})
+
+        # 获取评论信息
+        comments = Comment.objects.filter(article=article).order_by('id')
+        comment_list = []
+        for comment in comments:
+            for item in comment_list:
+                if not hasattr(item, 'children_comment'):
+                    setattr(item, 'children_comment', [])
+                if comment.pid == item:
+                    item.children_comment.append(comment)
+                    break
+            if comment.pid is None:
+                comment_list.append(comment)
+
+        comment_num=article.comment_set.all().count()
+        return render(request, 'article.html', {
+            'article':article,
+            'comment_list':comment_list,
+            'comment_num':comment_num
         })
