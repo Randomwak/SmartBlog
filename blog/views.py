@@ -1,10 +1,11 @@
 #-*- coding:utf-8 -*-
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views.generic.base import View
 from django.conf import settings
 from django.db.models import Count
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 from models import Category,Ad,Article,Links,Comment
+from forms import *
 # Create your views here.
 
 
@@ -126,6 +127,13 @@ class ArticleView(View):
         except Article.DoesNotExist:
             return render(request, 'failure.html', {'reason': '没有找到对应的文章'})
 
+
+        # 评论表单
+        comment_form = CommentForm({'author': request.user.username,
+                                    'email': request.user.email,
+                                    'url': request.user.url,
+                                    'article': id} if request.user.is_authenticated() else{'article': id})
+
         # 获取评论信息
         comments = Comment.objects.filter(article=article).order_by('id')
         comment_list = []
@@ -143,5 +151,27 @@ class ArticleView(View):
         return render(request, 'article.html', {
             'article':article,
             'comment_list':comment_list,
-            'comment_num':comment_num
+            'comment_num':comment_num,
+            'comment_form':comment_form,
         })
+
+
+class CommentPostView(View):
+    '''
+    提交评论
+    '''
+    def post(self,request):
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            # 获取表单信息
+            comment = Comment.objects.create(username=comment_form.cleaned_data["author"],
+                                             email=comment_form.cleaned_data["email"],
+                                             url=comment_form.cleaned_data["url"],
+                                             content=comment_form.cleaned_data["comment"],
+                                             article_id=comment_form.cleaned_data["article"],
+                                             user=request.user if request.user.is_authenticated() else None)
+            comment.save()
+        else:
+            return render(request, 'failure.html', {'reason': comment_form.errors})
+        return redirect(request.META['HTTP_REFERER'])
+

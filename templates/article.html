@@ -51,33 +51,32 @@
           {% endfor %}
       </ol>
 
+        <div id="commentform">
+    <h3 id="respond">Add your comment now</h3>
+    {% if not request.user.is_authenticated %}
+    <div class='login_info'>还没有登陆？可以登录后再评论哦。<b><a href="\">&raquo;去登录</a>&nbsp;<a href="/">&raquo;去注册</a></b></div>
+    {% else %}
+    <div class='login_info'><b>{{ request.user.username }}</b>,快来写点评论吧!&nbsp;<a href="\">注销</a></div>
+    {% endif %}
+    <form action="{% url 'comment_post' %}" method="post">
+    {% csrf_token %}
+    <p>{{ comment_form.author }}
+    <label for="author">姓名 (必填字段)</label></p>
 
-   <div id="commentform">
-    <h3 id="respond">添加评论</h3>
+    <p>{{ comment_form.email }}
+    <label for="email">邮箱 (必填字段/不会公开)</label></p>
 
-    <div class='login_info'>还没有登陆？可以登录后再评论哦。<big><a href="">&raquo;去登录</a>&nbsp;&nbsp;<a href="">&raquo;去注册</a></big></div>
-
-    <form action="http://www.baidu.org/wp-comments-post.php" method="post" id="commentform">
-
-
-    <p><input type="text" name="author" id="author" value="" size="25" tabindex="1" class="comment_input" />
-    <label for="author">称呼(必填字段)</label></p>
-
-    <p><input type="text" name="email" id="email" value="" size="25" tabindex="2" class="comment_input" />
-    <label for="email">邮箱(必填字段/隐私保护)</label></p>
-
-    <p><input type="text" name="url" id="url" value="" size="25" tabindex="3" class="comment_input" />
-    <label for="url">网址</label></p>
+    <p>{{ comment_form.url }}
+    <label for="url">个人网址</label></p>
 
 
     <!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code class=&quot;&quot; title=&quot;&quot; data-url=&quot;&quot;&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; &lt;pre class=&quot;&quot; title=&quot;&quot; data-url=&quot;&quot;&gt; &lt;span class=&quot;&quot; title=&quot;&quot; data-url=&quot;&quot;&gt; </small></p>-->
 
-    <p><textarea name="comment" id="comment" cols="25" rows="5" tabindex="4" class="message_input" ></textarea></p>
+    <p>{{ comment_form.comment }}</p>
 
-    <p><input name="submit" type="submit" id="submit" tabindex="5" value="Submit" class="button" />
-    <input type="hidden" name="comment_post_ID" value="542" />
-    <p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="999f94e7bf" /></p><p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="87"/></p></p>
-
+    <p>{{ comment_form.article }}
+        <input name="submit" type="submit" id="submit" tabindex="5" value="Submit" class="button" />
+    </p>
     </form>
     </div>
 {% endblock %}

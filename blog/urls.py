@@ -11,4 +11,6 @@ urlpatterns = [
     url(r'^category/$', CategoryView.as_view(), name='category'),
     #文章详情页面
     url(r'^article/$', ArticleView.as_view(), name='article'),
+    #评论提交
+    url(r'^comment/post/$', CommentPostView.as_view(), name='comment_post'),
 ]
