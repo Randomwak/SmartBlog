@@ -4,7 +4,7 @@ from django.views.generic.base import View
 from django.conf import settings
 from django.db.models import Count
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
-from models import Category,Ad,Article,Links,Comment
+from models import Category,Ad,Article,Links,Comment,Tag
 from forms import *
 # Create your views here.
 
@@ -38,6 +38,9 @@ def global_setting(request):
     #文章归档数据
     archive_list = Article.objects.distinct_date()
 
+    #文章标签数据
+    tag_list=Tag.objects.all()
+
     return {'SITE_NAME':settings.SITE_NAME,
             'SITE_DESC':settings.SITE_DESC,
             'WEIBO_SINA':settings.WEIBO_SINA,
@@ -51,6 +54,7 @@ def global_setting(request):
             'recommend_articles':recommend_articles,
             'click_articles_list':click_articles_list,
             'archive_list':archive_list,
+            'tag_list':tag_list,
             }
 
 class IndexPageView(View):
@@ -174,4 +178,5 @@ class CommentPostView(View):
         else:
             return render(request, 'failure.html', {'reason': comment_form.errors})
         return redirect(request.META['HTTP_REFERER'])
+
 
