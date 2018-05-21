@@ -179,4 +179,19 @@ class CommentPostView(View):
             return render(request, 'failure.html', {'reason': comment_form.errors})
         return redirect(request.META['HTTP_REFERER'])
 
+class TagView(View):
+    '''
+    获取标签页面
+    '''
+    def get(self,request):
+        # 获取标签id
+        name = request.GET.get('tname', None)
+        article_list=Article.objects.filter(tag__name=name)
+        article_list=getPage(request,article_list)
+
+        return render(request,"tag.html",{
+            'article_list':article_list,
+        })
+
+
 

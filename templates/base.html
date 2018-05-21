@@ -108,7 +108,7 @@ window.onload = function ()
       <h3>标签云</h3>
       <ul>
           {% for tag in tag_list %}
-        <li><a href="/">{{ tag.name }}</a></li>
+        <li><a href="{% url 'tag' %}?tname={{ tag.name }}">{{ tag.name }}</a></li>
           {% endfor %}
       </ul>
     </div>
