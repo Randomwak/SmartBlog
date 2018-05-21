@@ -21,7 +21,7 @@ header { width: 1000px; margin: 20px auto; overflow: hidden; clear: both; }
 #topnav a { display: inline-block; font-size: 18px; font-family: "Microsoft Yahei", Arial, Helvetica, sans-serif; padding: 0 20px; }
 #topnav a:hover { background: #fff; color: #000; }
 #topnav a { color: #FFF }
-#topnav_current { background: #F3FF41; }/* 高亮选中颜色 */
+#topnav_current { background: #ffed75; }/* 高亮选中颜色 */
 a#topnav_current { color: #000 }
 article { width: 1000px; margin: 20px auto; }
 /*footer*/

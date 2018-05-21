@@ -24,12 +24,12 @@
   </div>
   <nav id="topnav" class="f_r">
     <ul>
-        {% for category in category_list %}
-
-            <a href="?type={{ category.name }}" target="" {% ifequal category_name category.name %}id="topnav_current"{% endifequal %}>{{ category.name }}</a>
-        {% endfor %}
-       </ul>
-    <script src="{% static 'js/nav.js' %}"></script>
+        <a href="/" id={% if not request.GET.cid  %}'topnav_current'{% endif %}>首页</a>
+      {% for category in category_list %}
+      <a href="{% url 'category' %}?cid={{ category.id }}" id={% if cid == forloop.counter   %}'topnav_current'{% endif%}>{{ category.name }}</a>
+      {% endfor %}
+        </ul>
+{#    <script src="{% static 'js/nav.js' %}"></script>#}
   </nav>
 </header>
 <article>

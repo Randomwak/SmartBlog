@@ -31,6 +31,9 @@ def global_setting(request):
     #浏览排行
     click_articles_list=Article.objects.all().order_by('-click_count')[:6]
 
+    #文章归档数据
+    archive_list = Article.objects.distinct_date()
+
     return {'SITE_NAME':settings.SITE_NAME,
             'SITE_DESC':settings.SITE_DESC,
             'WEIBO_SINA':settings.WEIBO_SINA,
@@ -43,6 +46,7 @@ def global_setting(request):
             'article_comment_list':article_comment_list,
             'recommend_articles':recommend_articles,
             'click_articles_list':click_articles_list,
+            'archive_list':archive_list,
             }
 
 class IndexPageView(View):
@@ -51,15 +55,11 @@ class IndexPageView(View):
     '''
     def get(self,request):
         #最新文章数据
-        artical_list=Article.objects.all()
-        artical_list = getPage(request, artical_list)
-
-        #获取文章归档数据
-        archive_list=Article.objects.distinct_date()
+        article_list=Article.objects.all()
+        article_list = getPage(request, article_list)
 
         return render(request,"index.html",{
-            'artical_list':artical_list,
-            'archive_list':archive_list,
+            'article_list':article_list,
         })
 
 class ArchiveView(View):
@@ -72,10 +72,8 @@ class ArchiveView(View):
         article_list=Article.objects.filter(date_publish__icontains=year+'-'+month)
         article_list=getPage(request,article_list)
 
-        archive_list=Article.objects.distinct_date()
         return render(request,"archive.html",{
-            'artical_list':article_list,
-            'archive_list':archive_list,
+            'article_list':article_list,
         })
 
 
@@ -91,3 +89,22 @@ def getPage(request, article_list):
     article_list = p.page(page)
     return article_list
 
+
+class CategoryView(View):
+    '''
+    分类页面
+    '''
+    def get(self,request):
+        # 先获取客户端提交的信息
+        cid = request.GET.get('cid', None)
+        try:
+            category = Category.objects.get(pk=cid)
+        except Category.DoesNotExist:
+            return render(request, 'failure.html', {'reason': '分类不存在'})
+        article_list = Article.objects.filter(category=category)
+        article_list = getPage(request, article_list)
+
+        return render(request,"category.html",{
+            'article_list':article_list,
+            'cid':int(cid)-1,
+        })

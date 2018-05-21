@@ -1,11 +1,10 @@
 {% extends 'base.html'%}
 {% load staticfiles %}
-
 {% block left_content %}
     {% include 'ad.html' %}
     <div class="topnews">
       <h2>{{ request.GET.year }}/{{ request.GET.month }}归档文章</h2>
-        {% for article in artical_list.object_list %}
+        {% for article in article_list.object_list %}
             <div class="blogs">
         <ul>
           <h3><a href="/">{{ article.title }}</a></h3>
@@ -14,14 +13,6 @@
         </ul>
       </div>
         {% endfor %}
-
-
     </div>
-
     {% include 'pagination.html' %}
-
-
-
-
-
 {% endblock %}
