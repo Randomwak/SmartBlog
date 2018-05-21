@@ -14,5 +14,11 @@ urlpatterns = [
     #评论提交
     url(r'^comment/post/$', CommentPostView.as_view(), name='comment_post'),
     #标签页面
-    url(r'^tag/$',TagView.as_view(),name='tag')
+    url(r'^tag/$',TagView.as_view(),name='tag'),
+    #登出
+    url(r'^logout$', LogoutView.as_view(), name='logout'),
+    #注册
+    url(r'^reg$', RegisterView.as_view(), name='reg'),
+    #登陆
+    url(r'^login$', LoginView.as_view(), name='login'),
 ]

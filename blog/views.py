@@ -4,7 +4,9 @@ from django.views.generic.base import View
 from django.conf import settings
 from django.db.models import Count
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
-from models import Category,Ad,Article,Links,Comment,Tag
+from django.contrib.auth import logout, login, authenticate
+from models import Category,Ad,Article,Links,Comment,Tag,UserProfile
+from django.contrib.auth.hashers import make_password
 from forms import *
 # Create your views here.
 
@@ -195,3 +197,65 @@ class TagView(View):
 
 
 
+
+class RegisterView(View):
+    '''
+    注册
+    '''
+    def post(self,request):
+        reg_form = RegForm(request.POST)
+        if reg_form.is_valid():
+            # 注册
+            user = UserProfile.objects.create(username=reg_form.cleaned_data["username"],
+                                       email=reg_form.cleaned_data["email"],
+                                       url=reg_form.cleaned_data["url"],
+                                       password=make_password(reg_form.cleaned_data["password"]), )
+            user.save()
+
+            # 登录
+            user.backend = 'django.contrib.auth.backends.ModelBackend'  # 指定默认的登录验证方式
+            login(request, user)
+            return redirect(request.POST.get('source_url'))
+        else:
+            return render(request, 'failure.html', {'reason': reg_form.errors})
+
+        return render(request, 'reg.html', locals())
+
+    def get(self,request):
+        reg_form = RegForm()
+        return render(request, 'reg.html', locals())
+
+
+class LoginView(View):
+    '''
+    登录
+    '''
+    def post(self,request):
+        login_form = LoginForm(request.POST)
+        if login_form.is_valid():
+            # 登录
+            username = login_form.cleaned_data["username"]
+            password = login_form.cleaned_data["password"]
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                user.backend = 'django.contrib.auth.backends.ModelBackend'  # 指定默认的登录验证方式
+                login(request, user)
+            else:
+                return render(request, 'failure.html', {'reason': '登录验证失败'})
+            return redirect(request.POST.get('source_url'))
+        else:
+            return render(request, 'failure.html', {'reason': login_form.errors})
+        render(request, 'login.html', locals())
+
+    def get(self,request):
+        login_form = LoginForm()
+        return render(request, 'login.html', locals())
+
+
+class LogoutView(View):
+    '''
+    登出
+    '''
+    def get(self,request):
+        logout(request)
+        return redirect(request.META['HTTP_REFERER'])
