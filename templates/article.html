@@ -20,7 +20,7 @@
     <br />
         <span class="tags">
             {% for tag in article.tag.all %}
-            <a href="?tag={{ tag.name }}" rel="tag">{{ tag.name }}</a>
+            <a href="{% url 'tag' %}?tname={{ tag.name }}" rel="tag">{{ tag.name }}</a>
             {% endfor %}
         </span>
     <br />
